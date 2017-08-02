@@ -77,11 +77,11 @@ class KNeighborsRegressor(NeighborsBase, KNeighborsMixin,
         self._init_params(n_neighbors=n_neighbors,
                           algorithm=algorithm,
                           leaf_size=leaf_size, metric=metric, p=p,
-                          metric_params=metric_params, n_jobs=n_jobs, 
-                          max_iter=max_iter, **kwargs)
+                          metric_params=metric_params, n_jobs=n_jobs)
         self.weights = _check_weights(weights)
+        self.max_iter=max_iter
         self.fit = False
-        
+       
     def _fit(self, X):
         if self.metric_params is None:
             self.effective_metric_params_ = {}
@@ -273,7 +273,7 @@ class KNeighborsRegressor(NeighborsBase, KNeighborsMixin,
                 # has the (dis)advantage of being imputed by the maximum number of 
                 # observations
                 miss_ind = np.isnan(self.X).any(axis=1)
-                _ = self.fit(self.X[~miss_ind,col_ind], self._X_[~miss_ind,_col_])
+                _ = self.fit(self.X[~miss_ind,col_ind], self.X[~miss_ind,_col_])
                 # replace the missing values with the predictions
                 self.X[row_na, _col_] = self._predict(self.X[row_na][:,col_ind])
         
