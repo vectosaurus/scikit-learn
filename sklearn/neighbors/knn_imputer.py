@@ -7,7 +7,7 @@ from .base import RadiusNeighborsMixin, SupervisedFloatMixin
 from ..base import RegressorMixin
 from ..utils import check_array
 
-class KNeighborsRegressor(NeighborsBase, KNeighborsMixin,
+class KNeighborsImputer(NeighborsBase, KNeighborsMixin,
                           SupervisedFloatMixin,
                           RegressorMixin):
     """ Imputation based on k-nearest neighbors.
@@ -72,14 +72,14 @@ class KNeighborsRegressor(NeighborsBase, KNeighborsMixin,
     """
     def __init__(self, n_neighbors=5, weights='uniform', 
                  algorithm='auto', leaf_size=30,
-                p=2, metric_params='minkowski', metric_params=None, n_jobs = 1,
-                max_iter = 10, **kwargs):
+                p=2, metric='minkowski', metric_params=None, n_jobs = 1,
+                max_iter=10):
         self._init_params(n_neighbors=n_neighbors,
                           algorithm=algorithm,
                           leaf_size=leaf_size, metric=metric, p=p,
                           metric_params=metric_params, n_jobs=n_jobs)
         self.weights = _check_weights(weights)
-        self.max_iter=max_iter
+        self.max_iter = max_iter
         self.fit = False
        
     def _fit(self, X):
